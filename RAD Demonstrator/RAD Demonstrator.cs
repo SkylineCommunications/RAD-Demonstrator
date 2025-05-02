@@ -4,6 +4,8 @@ using Skyline.AppInstaller;
 using Skyline.DataMiner.Automation;
 using Skyline.DataMiner.Net.AppPackages;
 
+using Protocols;
+using Elements;
 /// <summary>
 /// DataMiner Script Class.
 /// </summary>
@@ -24,9 +26,14 @@ internal class Script
 			var installer = new AppInstaller(Engine.SLNetRaw, context);
 			installer.InstallDefaultContent();
 
-			////string setupContentPath = installer.GetSetupContentDirectory();
+			string setupContentPath = installer.GetSetupContentDirectory();
 
 			// Custom installation logic can be added here for each individual install package.
+			var protocolInstaller = new ProtocolInstaller(Engine.SLNetRaw, context, setupContentPath, engine.GenerateInformation);
+			protocolInstaller.InstallDefaultContent();
+
+			var elementInstaller = new ElementInstaller(engine);
+			elementInstaller.InstallDefaultContent();
 		}
 		catch (Exception e)
 		{
