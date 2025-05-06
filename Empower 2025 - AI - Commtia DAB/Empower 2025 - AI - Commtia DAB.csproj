@@ -8,11 +8,12 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Empower_2025___AI___Commtia_DAB</RootNamespace>
     <AssemblyName>Empower 2025 - AI - Commtia DAB</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
