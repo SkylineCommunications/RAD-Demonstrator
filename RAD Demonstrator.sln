@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAD Demonstrator", "RAD Demonstrator\RAD Demonstrator.csproj", "{164DC90C-B351-428D-86DE-8C2750D738D9}"
 EndProject
@@ -15,6 +15,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Analysis", "Code Analy
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dont touch my stuff", "Dont touch my stuff\Dont touch my stuff.csproj", "{4EBEEF35-1D23-4671-BEF2-B2FD88886D2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Empower 2025 - AI - Commtia DAB", "Empower 2025 - AI - Commtia DAB\Empower 2025 - AI - Commtia DAB.csproj", "{6A34D5DD-07D3-4044-A08C-201F706B477F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{164DC90C-B351-428D-86DE-8C2750D738D9} = {164DC90C-B351-428D-86DE-8C2750D738D9}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dis", "dis", "{62F8DEDF-90D1-454D-A126-20B9850052BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6DE73FB7C20CD8F0711A68159F49F24C", "6DE73FB7C20CD8F0711A68159F49F24C", "{9D01C518-6B7F-450B-81BB-FC58D7756682}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QAction_Helper", "..\..\..\AppData\Local\Temp\DIS\QActions\6DE73FB7C20CD8F0711A68159F49F24C\QAction_Helper\QAction_Helper.csproj", "{EE23C678-7A26-5A23-3E6B-FAD93A376F6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,12 +41,22 @@ Global
 		{4EBEEF35-1D23-4671-BEF2-B2FD88886D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EBEEF35-1D23-4671-BEF2-B2FD88886D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EBEEF35-1D23-4671-BEF2-B2FD88886D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A34D5DD-07D3-4044-A08C-201F706B477F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A34D5DD-07D3-4044-A08C-201F706B477F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A34D5DD-07D3-4044-A08C-201F706B477F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A34D5DD-07D3-4044-A08C-201F706B477F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE23C678-7A26-5A23-3E6B-FAD93A376F6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE23C678-7A26-5A23-3E6B-FAD93A376F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE23C678-7A26-5A23-3E6B-FAD93A376F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE23C678-7A26-5A23-3E6B-FAD93A376F6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7ADE0108-953D-4983-A70D-5AFC27606CD9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{9D01C518-6B7F-450B-81BB-FC58D7756682} = {62F8DEDF-90D1-454D-A126-20B9850052BB}
+		{EE23C678-7A26-5A23-3E6B-FAD93A376F6F} = {9D01C518-6B7F-450B-81BB-FC58D7756682}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08A048DE-1079-43CC-89B6-32E0C77930F9}
