@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Analysis", "Code Analy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dont touch my stuff", "Dont touch my stuff\Dont touch my stuff.csproj", "{4EBEEF35-1D23-4671-BEF2-B2FD88886D2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Empower 2025 - AI - Commtia DAB", "Empower 2025 - AI - Commtia DAB\Empower 2025 - AI - Commtia DAB.csproj", "{6A34D5DD-07D3-4044-A08C-201F706B477F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Empower 2025 - AI - Commtia DAB", "Empower 2025 - AI - Commtia DAB\Empower 2025 - AI - Commtia DAB.csproj", "{7B3A77D9-E2D0-460D-8745-61DD6981CF0F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{164DC90C-B351-428D-86DE-8C2750D738D9} = {164DC90C-B351-428D-86DE-8C2750D738D9}
 	EndProjectSection
@@ -35,10 +35,10 @@ Global
 		{4EBEEF35-1D23-4671-BEF2-B2FD88886D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EBEEF35-1D23-4671-BEF2-B2FD88886D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EBEEF35-1D23-4671-BEF2-B2FD88886D2E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A34D5DD-07D3-4044-A08C-201F706B477F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A34D5DD-07D3-4044-A08C-201F706B477F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A34D5DD-07D3-4044-A08C-201F706B477F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A34D5DD-07D3-4044-A08C-201F706B477F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B3A77D9-E2D0-460D-8745-61DD6981CF0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B3A77D9-E2D0-460D-8745-61DD6981CF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B3A77D9-E2D0-460D-8745-61DD6981CF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B3A77D9-E2D0-460D-8745-61DD6981CF0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
