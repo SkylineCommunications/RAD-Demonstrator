@@ -29,6 +29,46 @@ You can also add new projects by using the dotnet-cli. For the sake of stability
 
 Every *Skyline.DataMiner.SDK* project within the solution, except other DataMiner package projects, will by default be included within the .dmapp created by this project. You can customize this behavior using the *PackageContent/ProjectReferences.xml* file. This allows you to add filters to include or exclude projects as needed.
 
+### Adding Protocols
+This is not really supported yet, but here is a hacky way you can do it:
+
+1. Create a new project in the solution, and select the *C# console app* project. Take one that can run on .NET on Windows, Linux and macOS.
+1. Add a folder *Files* with the protocol files you want to include:
+	1. Under *Files/Protocol*, include a Protocol.xml file.
+	1. Under *Files/Templates*, include any trend and alarm templates.
+	1. Add a *Files/Description.txt* file
+1. In the main project, add `<ProjectReference Exclude="..\[PATH_TO_YOUR_NEW_CSPROJ_FILE]" />` to *PackageContent/ProjectReferences.xml*
+1. Open the csproj file in the new protocol project
+	1. In the new protocol project, add `<DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>` under a `<PropertyGroup>` tag.
+	1. Add the following *Target* under the `<Project>` tag
+	   ```xml
+	   <Target Name="BuildProtocolPackage" AfterTargets="AfterBuild" Outputs="$(SolutionDir)\$(SolutionName)\SetupContent\Protocols\$(ProjectName).dmprotocol">
+         <Message Text="This custom target build the dmproject package" />
+	     <Exec Command="python &quot;$(SolutionDir)/create_dmprotocol.py&quot; --output-dir &quot;$(SolutionDir)/$(SolutionName)/SetupContent/Protocols&quot; --package-name &quot;$(ProjectName)&quot; &quot;$(ProjectDir)/Files&quot;" />
+       </Target>
+       ```
+	1. The csproj file could now look as follows
+	   ```xml
+	   <Project Sdk="Microsoft.NET.Sdk">
+	     <PropertyGroup>
+		   <OutputType>Exe</OutputType>
+		   <TargetFramework>net8.0</TargetFramework>
+		   <RootNamespace>Empower_2025___AI___Task_Manager</RootNamespace>
+		   <ImplicitUsings>enable</ImplicitUsings>
+		   <Nullable>enable</Nullable>
+		   <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+	     </PropertyGroup>
+	     <Target Name="BuildProtocolPackage" AfterTargets="AfterBuild" Outputs="$(SolutionDir)\$(SolutionName)\SetupContent\Protocols\$(ProjectName).dmprotocol">
+		   <Message Text="This custom target build the dmproject package" />
+		   <Exec Command="python &quot;$(SolutionDir)/create_dmprotocol.py&quot; --output-dir &quot;$(SolutionDir)/$(SolutionName)/SetupContent/Protocols&quot; --package-name &quot;$(ProjectName)&quot; &quot;$(ProjectDir)/Files&quot;" />
+	     </Target>
+	   </Project>
+	   ```
+
+1. Right-click the solution and select *Properties*, then navigate to *Project dependencies* and add your new project as a dependency to the main project.
+
+
+
 ## Importing from DataMiner
 
 You can import specific items directly from a DataMiner Agent using DIS:
