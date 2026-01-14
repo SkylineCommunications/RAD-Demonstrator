@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>Empower_2025___AI___Commtia_DAB</RootNamespace>
+    <RootNamespace>Commtia_DAB</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>

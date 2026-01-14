@@ -19,11 +19,10 @@
 		public void InstallDefaultContent()
 		{
 			int LondonViewID = CreateViews(new string[] { "DataMiner Catalog", "Using Relational Anomaly Detection", "London" });
-			int SouthamptonViewID = CreateViews(new string[] { "DataMiner Catalog", "Using Relational Anomaly Detection", "Southampton" });
-			CreateElement($"RAD - Commtia LON 1", "Empower 2025 - AI - Commtia DAB", "Production", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
-			CreateElement($"RAD - Commtia LON 2", "Empower 2025 - AI - Commtia DAB", "Production", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
-			CreateElement($"RAD - Commtia LON 3", "Empower 2025 - AI - Commtia DAB", "Production", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
-			CreateElement($"RAD - Commtia STH 1", "Empower 2025 - AI - Commtia DAB", "Production", SouthamptonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			CreateElement($"RAD - Commtia LON 1", "Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			CreateElement($"RAD - Commtia LON 2", "Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			CreateElement($"RAD - Commtia LON 3", "Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			CreateElement($"RAD - Commtia LON 4", "Commtia DAB - Deviating", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
 		}
 
 		private void AssignVisioToView(int viewID, string visioFileName)

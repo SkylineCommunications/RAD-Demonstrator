@@ -53,7 +53,7 @@ This is not really supported yet, but here is a hacky way you can do it:
 	     <PropertyGroup>
 		   <OutputType>Exe</OutputType>
 		   <TargetFramework>net8.0</TargetFramework>
-		   <RootNamespace>Empower_2025___AI___Task_Manager</RootNamespace>
+		   <RootNamespace>Task_Manager</RootNamespace>
 		   <ImplicitUsings>enable</ImplicitUsings>
 		   <Nullable>enable</Nullable>
 		   <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
