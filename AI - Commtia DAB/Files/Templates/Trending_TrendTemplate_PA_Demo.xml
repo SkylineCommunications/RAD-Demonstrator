@@ -1,0 +1,76 @@
+﻿<Trending>
+	<Name>TrendTemplate_PA_Demo</Name>
+	<Description></Description>
+	<Protocol>
+		<Name>AI - Commtia DAB</Name>
+		<Version>1.0.0.1-fast</Version>
+	</Protocol>
+	<Id id="120" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="121" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="122" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="123" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="124" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="125" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="126" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="130" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="160" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="161" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="162" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="167" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="1001" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="1003" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="1005" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="1022" rttrending="false" avgtrending="true" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="1023" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="1024" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65000" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65002" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65003" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65004" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65005" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65006" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65007" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65008" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65009" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65077" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65079" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65080" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65118" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65119" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65120" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65121" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65130" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="66154" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="66189" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2222" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2223" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2224" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2225" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2226" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2227" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2228" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2229" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2230" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2242" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2243" rttrending="false" avgtrending="true" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2244" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2245" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2246" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2264" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2266" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2268" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2270" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2276" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2277" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2278" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="2279" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65082" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65083" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65123" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65124" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65125" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65126" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65127" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65136" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+	<Id id="65137" rttrending="false" avgtrending="false" filter="*" centraldbdisablert="false" centraldbdisableavg="false"/>
+</Trending>

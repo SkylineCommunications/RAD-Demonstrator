@@ -1,0 +1,2 @@
+Protocol Name: Fleet-Outlier-Detection-Commtia DAB
+Protocol Version: 1.0.0.1-outlier-radar-{PROTOCOL_VERSION_SUFFIX}

@@ -1,0 +1,3524 @@
+﻿<!--
+	Protocol by Data Analytics team as Demonstrator for the Relational Anomaly Detection feature
+	
+	SNMP protocol for Commtia DAB
+
+	- Slow version: during the first few hours after element creation, a history of about one week of 5min avg trend data points will be generated for the 4 history set parameters. 
+		Spreaded load to avoid high peak load on database when large number of elements is generated simultaneously.
+	- The element will keep on generating new values (< now - 1h) for these history set parameters
+	- Add Data button click leads to the generation of some deviating behavior in the last hour - Only possible if all historical data has been read in already
+	
+-->
+<Protocol xmlns="http://www.skyline.be/protocol">
+	<Name>Fleet-Outlier-Detection-Commtia DAB</Name>
+	<Description>Commtia DAB for fleet outliers</Description>
+	<Provider>Skyline Communications</Provider>
+	<Version>1.0.0.1-outlier-radar-{PROTOCOL_VERSION_SUFFIX}</Version>
+	<Type>virtual</Type>
+	<Vendor>Commtia</Vendor>
+	<Display defaultPage="SCU" pageOrder="SCU;Amplifier;Demo Control" wideColumnPages="PAs"/>
+	<ElementType>SCU</ElementType>
+	<Params>
+		<Param id="2">
+			<Name>AfterStartup</Name>
+			<Description>After Startup</Description>
+			<Type>dummy</Type>
+		</Param>
+		<Param id="3" trending="false" save="true">
+			<Name>DummyAddValue</Name>
+			<Description>Dummy For Adding Value</Description>
+			<Type>fixed</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+		</Param>
+		<Param id="4" trending="false" save="true">
+			<Name>StartTime</Name>
+			<Type>read</Type>
+			<Description>The time the demo started</Description>
+			<Interprete>
+				<RawType>double</RawType>
+				<LengthType>fixed</LengthType>
+				<Length>8</Length>
+				<Type>double</Type>
+			</Interprete>
+			<Measurement>
+				<Type options="date">number</Type>
+				<Decimals>8</Decimals>
+			</Measurement>
+		</Param>
+		<Param id="5">
+			<Name>setHistoryData</Name>
+			<Description>Set History Data</Description>
+			<Type>dummy</Type>
+		</Param>
+		<Param id="9" trending="false" save="true">
+			<Name>LastRowNumber</Name>
+			<Description>The index of the last row we pushed</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="60001" trending="false" save="true">
+			<Name>DataIndex</Name>
+			<Description>The index of the data we want to push</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<DefaultValue>0</DefaultValue>
+			</Interprete>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="60004" trending="false" save="false">
+			<Name>busy</Name>
+			<Description>Busy?</Description>
+			<Information>
+				<Text>Whether we are busy generating data</Text>
+				<Subtext>Whether we are currently busy generating data.</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+				<DefaultValue>No</DefaultValue>
+			</Interprete>
+			<Display>
+				<RTDisplay>false</RTDisplay>
+			</Display>
+		</Param>
+		<Param id="60006" trending="false" save="true">
+			<Name>started</Name>
+			<Description>Started?</Description>
+			<Information>
+				<Text>Whether we started generating data</Text>
+				<Subtext>Yes if we started generating data, otherwise No</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+				<DefaultValue>No</DefaultValue>
+			</Interprete>
+			<Display>
+				<RTDisplay>false</RTDisplay>
+			</Display>
+		</Param>
+		<Param id="6" trending="false">
+			<Name>Initialization</Name>
+			<Description>Demo Status</Description>
+			<Information>
+				<Includes>
+					<Include>time</Include>
+					<Include>range</Include>
+					<Include>steps</Include>
+					<Include>units</Include>
+				</Includes>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<Type>string</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Demo Control</Page>
+						<Column>0</Column>
+						<Row>1</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="11003" trending="false">
+			<Name>Title Demo Begin</Name>
+			<Description>Demo Control</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Demo Control</Page>
+						<Row>0</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="11004" trending="false">
+			<Name>Title Demo End</Name>
+			<Description></Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Demo Control</Page>
+						<Row>6</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end;connect">title</Type>
+			</Measurement>
+		</Param>
+		<!--
+			Device Information parameters
+		-->
+		<Param id="100" trending="false">
+			<Name>ipAddress</Name>
+			<Description>IP Address</Description>
+			<Information>
+				<Text>SCU IP Address</Text>
+				<Subtext>IP address of the System Control Unit</Subtext>
+			</Information>
+			<Type>pollingip</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>11</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="10100" trending="false">
+			<Name>Title Device Information Begin</Name>
+			<Description>Device Information</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>10</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="10101" trending="false">
+			<Name>Title Device Information End</Name>
+			<Description></Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>14</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="120">
+			<Name>scuSystemAlarmsexc1communications</Name>
+			<Description>Exciter A Communication</Description>
+			<Information>
+				<Text>Exciter A Communication Status</Text>
+				<Subtext>Alarms when the SCU is not able to communicate with Exciter A</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.4.5.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>1</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="121">
+			<Name>scuSystemAlarmsexc2communications</Name>
+			<Description>Exciter B Comm</Description>
+			<Information>
+				<Text>Exciter B Communication Status</Text>
+				<Subtext>Alarms when the SCU is not able to communicate with Exciter B</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.4.6.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>2</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="122">
+			<Name>scuSystemAlarmspowersupply1</Name>
+			<Description>Power Supply 1</Description>
+			<Information>
+				<Text>Power Supply 1 Status</Text>
+				<Subtext>Alarms if the 1st power supply is not working</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.4.18.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>3</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="123">
+			<Name>scuSystemAlarmspowersupply2</Name>
+			<Description>Power Supply 2</Description>
+			<Information>
+				<Text>Power Supply 2 Status</Text>
+				<Subtext>Alarms if the 2nd power supply is not working</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.4.19.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>4</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="124">
+			<Name>scusystemscuSystemAlarmsExternalRFLock</Name>
+			<Description>RF Lock</Description>
+			<Information>
+				<Text>RF Interlock Status</Text>
+				<Subtext>Alarms if the external RF Lock DCI is open</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.4.21.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>7</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="125">
+			<Name>scusystemscuSystemAlarmsCombinerSupply</Name>
+			<Description>Combiner Power Supply</Description>
+			<Information>
+				<Text>Combiner Power Supply or Fan Status</Text>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.4.22.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>8</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="126">
+			<Name>scusystemscuSystemAlarmsCombinerTemp</Name>
+			<Description>Combiner Temperature</Description>
+			<Information>
+				<Text>Combiner Temperature Status</Text>
+				<Subtext>Alarms if the combiner temperature sensor trips</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.4.20.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>9</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="130">
+			<Name>scuSystemAlarmsbackpannelstatus</Name>
+			<Description>Back Panel</Description>
+			<Information>
+				<Text>Back Panel Status</Text>
+				<Subtext>Alarms if there are internal communication problems with rear panel attached modules</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.4.15.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>5</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="10120" trending="false">
+			<Name>Title Alarm Summary Begin</Name>
+			<Description>Alarm Summary</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>0</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="10121" trending="false">
+			<Name>Title Alarm Summary End</Name>
+			<Description></Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>10</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end;connect">title</Type>
+			</Measurement>
+		</Param>
+		<!--
+			SCU Switching Control parameters
+		-->
+		<Param id="160">
+			<Name>scuSystemAlarmscontrolmode</Name>
+			<Description>Control Mode</Description>
+			<Information>
+				<Text>Control Mode Status</Text>
+				<Subtext>Indicates whether SCU is in Remote or Local service mode</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.4.17.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>1</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MiH>1</MiH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Remote</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Local</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="161">
+			<Name>scuSystemSettingssystemrfuser</Name>
+			<Description>Transmitter RF</Description>
+			<Information>
+				<Text>Transmitter User RF Output Status</Text>
+				<Subtext>Indicates whether the user controlled RF output setting of the transmitter is on or not</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.5.2.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>2</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<CH>1</CH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>On</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Off</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="162">
+			<Name>scuSystemSettingsselectedexciter</Name>
+			<Description>Active Exciter</Description>
+			<Information>
+				<Text>Active Exciter</Text>
+				<Subtext>Indicates which is the currently active exciter or indicates an error if there is not communication with the RF Selector module or the retrieved path is wrong</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.5.5.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>5</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Info>0;1</Info>
+				<MaH>2</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Exciter A</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Exciter B</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Error</Display>
+						<Value>2</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="167">
+			<Name>exciterSelection</Name>
+			<Description>Exciter Selection</Description>
+			<Information>
+				<Text>Exciter Selection</Text>
+				<Subtext>Configured switching type and/or selected exciter when manual switching type is selected</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>7</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1;2</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Automatic</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Exciter A</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Exciter B</Display>
+						<Value>2</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="169" trending="false">
+			<Name>activeExciterIP</Name>
+			<Description>Active Exciter IP</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="171" trending="false" options="snmpSet">
+			<Name>scuSystemSettingssystemrfuser</Name>
+			<Description>Transmitter RF</Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.70.5.2.0</OID>
+				<Type>integer</Type>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>2</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>togglebutton</Type>
+				<Discreets>
+					<Discreet>
+						<Display>On</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Off</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+			<Message>
+				<![CDATA[
+WARNING
+
+Do you want to switch the current RF output state of the transmitter?
+
+]]>
+			</Message>
+		</Param>
+		<Param id="177" trending="false">
+			<Name>exciterSelection</Name>
+			<Description>Exciter Selection</Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>8</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Automatic</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Exciter A</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Exciter B</Display>
+						<Value>2</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+			<Message>
+				<![CDATA[
+WARNING
+
+Do you want to change the exciter selection mode of the SCU?
+
+]]>
+			</Message>
+		</Param>
+		<Param id="179" trending="false">
+			<Name>exciterSelectionPoll</Name>
+			<Description>exciterSelectionPoll</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+		</Param>
+		<Param id="10160" trending="false">
+			<Name>Title Control Status Begin</Name>
+			<Description>Control Status</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>0</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="10161" trending="false">
+			<Name>Title Control Status End</Name>
+			<Description></Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>3</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="10162" trending="false">
+			<Name>Title Exciter Switching Begin</Name>
+			<Description>Exciter Switching</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>4</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="10163" trending="false">
+			<Name>Title Exciter Switching End</Name>
+			<Description></Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>SCU</Page>
+						<Row>9</Row>
+						<Column>1</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end;connect">title</Type>
+			</Measurement>
+		</Param>
+		<!--
+			Tx Amplifier alarm display parameters
+		-->
+		<Param id="1001">
+			<Name>txAmplifierOutput</Name>
+			<Description>Tx Amplifier Output</Description>
+			<Information>
+				<Text>Transmitter Amplifier RF Output Status</Text>
+				<Subtext>Indicates the current RF output status of the transmitter amplifier. It alarms when the output power is lower than the configured thresholds etc.</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier</Page>
+						<Row>1</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<MiL>-1</MiL>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+				<CH>2</CH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>RF Off</Display>
+						<Value>-1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>OK</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Reduced Power</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Shutdown</Display>
+						<Value>2</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="1003">
+			<Name>txAmplifierSWR</Name>
+			<Description>Tx Amplifier SWR</Description>
+			<Information>
+				<Text>Transmitter Amplifier SWR Status</Text>
+				<Subtext>Indicates the current SWR status of the transmitter amplifier. It alarms when the SWR value is lower than the configured threshold.</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier</Page>
+						<Row>2</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="1005">
+			<Name>pasMaxPowerEmergencyMode</Name>
+			<Description>PAs To Max Power (Emergency Mode)</Description>
+			<Information>
+				<Text>Power Amplifiers To Maximum Power (Emergency Mode)</Text>
+				<Subtext>Indicates when all active power amplifier units are boosted to their maximum power</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="-1">
+						<Display state="disabled">N/A</Display>
+						<Value>-1</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier</Page>
+						<Row>3</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Off</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Active</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="11000" trending="false">
+			<Name>Title Tx Amplifier Begin</Name>
+			<Description>Tx Amplifier</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier</Page>
+						<Row>0</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="11001" trending="false">
+			<Name>Title Tx Amplifier End</Name>
+			<Description></Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier</Page>
+						<Row>10</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end;connect">title</Type>
+			</Measurement>
+		</Param>
+		<!--
+			Tx Amplifier measurement display parameters
+		-->
+		<Param id="1021" trending="false">
+			<Name>txAmplifierOutputPower</Name>
+			<Description>txAmplifierOutputPower</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+		</Param>
+		<Param id="1022" trending="true" pollingInterval="300000" save="true" historySet="true">
+			<Name>txAmplifierOutputPowerWatts</Name>
+			<Description>Tx Amplifier Output Power</Description>
+			<Information>
+				<Text>Transmitter Amplifier Output Power</Text>
+				<Subtext>Transmitter amplifier output power in watts</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="0">
+						<Display>- -</Display>
+						<Value>0</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>W</Units>
+				<Positions>
+					<Position>
+						<Page>Amplifier</Page>
+						<Row>5</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="1023">
+			<Name>txAmplifierRelativeOutputPower</Name>
+			<Description>Tx Amplifier Relative Output Power</Description>
+			<Information>
+				<Text>Transmitter Amplifier Relative Output Power</Text>
+				<Subtext>Transmitter amplifier output power in dB relative to the calibrated transmitter output power</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Decimals>2</Decimals>
+				<Range>
+					<High>3</High>
+					<Low>-30</Low>
+				</Range>
+				<Exceptions>
+					<Exception id="1" value="-30">
+						<Display>- -</Display>
+						<Value>-30</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>dB</Units>
+				<Decimals>1</Decimals>
+				<Range>
+					<High>3</High>
+					<Low>-30</Low>
+				</Range>
+				<Positions>
+					<Position>
+						<Page>Amplifier</Page>
+						<Row>6</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="1024">
+			<Name>txAmplifierReflectedPower</Name>
+			<Description>Tx Amplifier Reflected Power</Description>
+			<Information>
+				<Text>Transmitter Amplifier Reflected Power</Text>
+				<Subtext>Transmitter amplifier reflected power in dB</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="0">
+						<Display>- -</Display>
+						<Value>0</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>dB</Units>
+				<Decimals>2</Decimals>
+				<Positions>
+					<Position>
+						<Page>Amplifier</Page>
+						<Row>7</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<!--
+			Tx Amplifier config display parameters
+		-->
+		<Param id="1040" trending="false">
+			<Name>txAmpConfigButton</Name>
+			<Description></Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier</Page>
+						<Row>11</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type width="110">pagebutton</Type>
+				<Discreets>
+					<Discreet>
+						<Display>PAs ...</Display>
+						<Value>PAs</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Amplifier Config ...</Display>
+						<Value>Amplifier Config</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="1041" trending="false">
+			<Name>txReferenceOutputPower</Name>
+			<Description>txReferenceOutputPower</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+		</Param>
+		<Param id="1042" trending="false">
+			<Name>txReferenceOutputPowerWatts</Name>
+			<Description>Transmitter Reference Output Power</Description>
+			<Information>
+				<Text>Transmitter Reference Output Power</Text>
+				<Subtext>The calibrated transmitter reference output power in watts</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>W</Units>
+				<Positions>
+					<Position>
+						<Page>Amplifier Config</Page>
+						<Row>1</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="1043" trending="false">
+			<Name>txOutputPowerAlarmThreshold</Name>
+			<Description>Transmitter Output Power Alarm Threshold</Description>
+			<Information>
+				<Text>Transmitter Output Power Alarm Threshold</Text>
+				<Subtext>The configured alarm threshold in dB for the transmitter output power relative to the reference power</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>dB</Units>
+				<Decimals>1</Decimals>
+				<Positions>
+					<Position>
+						<Page>Amplifier Config</Page>
+						<Row>3</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="1044" trending="false">
+			<Name>txOutputPowerWarningThreshold</Name>
+			<Description>Transmitter Output Power Warning Threshold</Description>
+			<Information>
+				<Text>Transmitter Output Power Warning Threshold</Text>
+				<Subtext>The configured warning threshold in dB for the transmitter output power relative to the reference power</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>dB</Units>
+				<Decimals>1</Decimals>
+				<Positions>
+					<Position>
+						<Page>Amplifier Config</Page>
+						<Row>4</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="1045" trending="false">
+			<Name>txSWRAlarmThreshold</Name>
+			<Description>Transmitter SWR Alarm Threshold</Description>
+			<Information>
+				<Text>Transmitter SWR Alarm Threshold</Text>
+				<Subtext>The configured SWR alarm threshold in dB for the transmitter</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>dB</Units>
+				<Decimals>1</Decimals>
+				<Positions>
+					<Position>
+						<Page>Amplifier Config</Page>
+						<Row>5</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<!-- reference output input parameters -->
+		<Param id="1051" trending="false" save="true">
+			<Name>savedTxReferenceOutputPower</Name>
+			<Description>savedTxReferenceOutputPower</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+		</Param>
+		<Param id="1052" trending="false">
+			<Name>txReferenceOutputPowerWatts</Name>
+			<Description>Transmitter Reference Output Power</Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>W</Units>
+				<Positions>
+					<Position>
+						<Page>Amplifier Config</Page>
+						<Row>1</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+			<Message>
+				<![CDATA[
+WARNING
+Do you want to change or set the reference power output for this transmitter?
+
+]]>
+			</Message>
+		</Param>
+		<Param id="11040" trending="false">
+			<Name>Title Tx Amplifier Information Begin</Name>
+			<Description>Tx Amplifier Information</Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier Config</Page>
+						<Row>0</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="begin;connect">title</Type>
+			</Measurement>
+		</Param>
+		<Param id="11041" trending="false">
+			<Name>Title Tx Amplifier Information End</Name>
+			<Description></Description>
+			<Type>fixed</Type>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier Config</Page>
+						<Row>9</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="end;connect">title</Type>
+			</Measurement>
+		</Param>
+		<!--
+			Multiple PA alarm status table parameters
+		-->
+		<Param id="2020" trending="false">
+			<Name>paStatusTable</Name>
+			<Description>paStatusTable</Description>
+			<Type>array</Type>
+			<ArrayOptions index="0" options="volatile">
+				<ColumnOption idx="0" pid="2021" type="snmp" options=""/>
+				<ColumnOption idx="1" pid="2022" type="snmp" options=""/>
+				<ColumnOption idx="2" pid="2023" type="snmp" options=""/>
+				<ColumnOption idx="3" pid="2024" type="snmp" options=""/>
+				<ColumnOption idx="4" pid="2025" type="snmp" options=""/>
+				<ColumnOption idx="5" pid="2026" type="snmp" options=""/>
+				<ColumnOption idx="6" pid="2027" type="snmp" options=""/>
+				<ColumnOption idx="7" pid="2028" type="snmp" options=""/>
+				<ColumnOption idx="8" pid="2029" type="snmp" options=""/>
+				<ColumnOption idx="9" pid="2030" type="snmp" options=""/>
+				<ColumnOption idx="10" pid="2031" type="snmp" options=""/>
+				<ColumnOption idx="11" pid="2032" type="snmp" options=""/>
+			</ArrayOptions>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete" options="instance"></OID>
+			</SNMP>
+		</Param>
+		<Param id="2021" trending="false">
+			<Name>paStatusIndex</Name>
+			<Description>paStatusIndex</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+		</Param>
+		<Param id="2022" trending="false">
+			<Name>ddstaAmplifierCommunication</Name>
+			<Description>ddstaAmplifierCommunication</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.2</OID>
+				<Type>integer</Type>
+			</SNMP>
+		</Param>
+		<Param id="2023" trending="false">
+			<Name>ddstaAmplifierInput</Name>
+			<Description>ddstaAmplifierInput</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.4</OID>
+				<Type>integer</Type>
+			</SNMP>
+		</Param>
+		<Param id="2024" trending="false">
+			<Name>ddstaAmplifierUserRFOFF</Name>
+			<Description>ddstaAmplifierUserRFOFF</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.16</OID>
+				<Type>integer32</Type>
+			</SNMP>
+		</Param>
+		<Param id="2025" trending="false">
+			<Name>ddstaAmplifierRFOutput</Name>
+			<Description>ddstaAmplifierRFOutput</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.6</OID>
+				<Type>integer</Type>
+			</SNMP>
+		</Param>
+		<Param id="2026" trending="false">
+			<Name>ddstaAmplifierRFOutputWrn</Name>
+			<Description>ddstaAmplifierRFOutputWrn</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.5</OID>
+				<Type>integer</Type>
+			</SNMP>
+		</Param>
+		<Param id="2027" trending="false">
+			<Name>ddstaAmplifierSWR</Name>
+			<Description>ddstaAmplifierSWR</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.7</OID>
+				<Type>integer</Type>
+			</SNMP>
+		</Param>
+		<Param id="2028" trending="false">
+			<Name>ddstaAmplifierTemperature</Name>
+			<Description>ddstaAmplifierTemperature</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.19</OID>
+				<Type>integer</Type>
+			</SNMP>
+		</Param>
+		<Param id="2029" trending="false">
+			<Name>ddstaAmplifierFan</Name>
+			<Description>ddstaAmplifierFan</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.20</OID>
+				<Type>integer</Type>
+			</SNMP>
+		</Param>
+		<Param id="2030" trending="false">
+			<Name>ddstaAmplifierDCError</Name>
+			<Description>ddstaAmplifierDCError</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.21</OID>
+				<Type>integer</Type>
+			</SNMP>
+		</Param>
+		<Param id="2031" trending="false">
+			<Name>ddstaAmplifierACError</Name>
+			<Description>ddstaAmplifierACError</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.22</OID>
+				<Type>integer</Type>
+			</SNMP>
+		</Param>
+		<Param id="2032" trending="false">
+			<Name>ddstaAmplifierGainFailure</Name>
+			<Description>ddstaAmplifierGainFailure</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.1.1.1.23</OID>
+				<Type>integer</Type>
+			</SNMP>
+		</Param>
+		<!--
+			Multiple PA Power Supply table parameters
+		-->
+		<Param id="2060" trending="false">
+			<Name>paPowerSupplyTable</Name>
+			<Description>paPowerSupplyTable</Description>
+			<Type>array</Type>
+			<ArrayOptions index="0" options="volatile">
+				<ColumnOption idx="0" pid="2061" type="snmp" options=""/>
+				<ColumnOption idx="1" pid="2062" type="snmp" options=""/>
+				<ColumnOption idx="2" pid="2063" type="snmp" options=""/>
+				<ColumnOption idx="3" pid="2064" type="snmp" options=""/>
+				<ColumnOption idx="4" pid="2065" type="snmp" options=""/>
+				<ColumnOption idx="5" pid="2066" type="snmp" options=""/>
+				<ColumnOption idx="6" pid="2067" type="snmp" options=""/>
+				<ColumnOption idx="7" pid="2068" type="snmp" options=""/>
+				<ColumnOption idx="8" pid="2069" type="snmp" options=""/>
+				<ColumnOption idx="9" pid="2070" type="snmp" options=""/>
+				<ColumnOption idx="10" pid="2071" type="snmp" options=""/>
+				<ColumnOption idx="11" pid="2072" type="snmp" options=""/>
+				<ColumnOption idx="12" pid="2073" type="snmp" options=""/>
+			</ArrayOptions>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete" options="instance"></OID>
+			</SNMP>
+		</Param>
+		<Param id="2061" trending="false">
+			<Name>paPowerSupplyIndex</Name>
+			<Description>paPowerSupplyIndex</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+		</Param>
+		<Param id="2062" trending="false">
+			<Name>measVAmpVoltagemV</Name>
+			<Description>measVAmpVoltagemV</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.5</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2063" trending="false">
+			<Name>measV12VoltagemV</Name>
+			<Description>measV12VoltagemV</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.6</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2064" trending="false">
+			<Name>measVAmpConsumptionmA</Name>
+			<Description>measVAmpConsumptionmA</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.7</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2065" trending="false">
+			<Name>measV12ConsumptionmA</Name>
+			<Description>measV12ConsumptionmAV</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.8</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2066" trending="false">
+			<Name>measVAmpVoltage2mV</Name>
+			<Description>measVAmpVoltage2mV</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.9</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2067" trending="false">
+			<Name>measV12Voltage2mV</Name>
+			<Description>measV12Voltage2mV</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.10</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2068" trending="false">
+			<Name>measVAmpConsumption2mA</Name>
+			<Description>measVAmpConsumption2mA</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.11</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2069" trending="false">
+			<Name>measV12Consumption2mA</Name>
+			<Description>measV12Consumption2mA</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.12</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2070" trending="false">
+			<Name>measVAmpVoltage3mV</Name>
+			<Description>measVAmpVoltage3mVp</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.13</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2071" trending="false">
+			<Name>measV12Voltage3mV</Name>
+			<Description>measV12Voltage3mV</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.14</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2072" trending="false">
+			<Name>measVAmpConsumption3mA</Name>
+			<Description>measVAmpConsumption3mA</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.15</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<Param id="2073" trending="false">
+			<Name>measV12Consumption3mA</Name>
+			<Description>measV12Consumption3mA</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete">1.3.6.1.4.1.13531.3000.100.50.1.2.1.1.16</OID>
+				<Type>integer32</Type>
+				<Factor>1000</Factor>
+			</SNMP>
+		</Param>
+		<!--
+			PA information display parameters
+		-->
+		<Param id="2201" trending="false">
+			<Name>paCount</Name>
+			<Description>Number Of PAs</Description>
+			<Information>
+				<Text>Number Of Power Amplifier Units</Text>
+				<Subtext>Total number of power amplifier units configured in the transmitter</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier</Page>
+						<Row>9</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2202" trending="false" save="true">
+			<Name>paType</Name>
+			<Description>Power Amplifier Unit Model Type</Description>
+			<Information>
+				<Text>Power Amplifier Unit Model Type</Text>
+				<Subtext>The model type of power amplifier units configured in the transmitter</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier Config</Page>
+						<Row>8</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Generic</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Standard</Display>
+						<Value>2</Value>
+					</Discreet>
+					<Discreet>
+						<Display>High Efficiency</Display>
+						<Value>3</Value>
+					</Discreet>
+					<Discreet>
+						<Display>50W</Display>
+						<Value>4</Value>
+					</Discreet>
+					<Discreet>
+						<Display>15W</Display>
+						<Value>5</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2209" trending="false">
+			<Name>paIndex</Name>
+			<Description>paIndex</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+		</Param>
+		<Param id="2212" trending="false" level="3" setter="true">
+			<Name>paType</Name>
+			<Description>PA Model Type</Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Amplifier Config</Page>
+						<Row>8</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Generic</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Standard</Display>
+						<Value>2</Value>
+					</Discreet>
+					<Discreet>
+						<Display>High Efficiency</Display>
+						<Value>3</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+			<Message>
+				<![CDATA[
+Do you want to change the PA type?
+(This will alter the number of power supplies and fans that are monitored)
+
+]]>
+			</Message>
+		</Param>
+		<!--
+			PA Alarm Status table display parameters
+		-->
+		<Param id="2220" trending="false">
+			<Name>paAlarmStatusDisplayTable_1</Name>
+			<Description>PAs Alarm Status</Description>
+			<Information>
+				<Text>Power Amplifier Units Alarm Status</Text>
+				<Subtext>The alarm status of the power amplifier units configured in the transmitter</Subtext>
+			</Information>
+			<Type>array</Type>
+			<ArrayOptions index="0" options="volatile;autoAdd">
+				<ColumnOption idx="0" pid="2221" type="custom" options=""/>
+				<ColumnOption idx="1" pid="2222" type="custom" options=""/>
+				<ColumnOption idx="2" pid="2223" type="custom" options=""/>
+				<ColumnOption idx="3" pid="2224" type="custom" options=""/>
+				<ColumnOption idx="4" pid="2225" type="custom" options=""/>
+				<ColumnOption idx="5" pid="2226" type="custom" options=""/>
+				<ColumnOption idx="6" pid="2227" type="custom" options=""/>
+				<ColumnOption idx="7" pid="2228" type="custom" options=""/>
+				<ColumnOption idx="8" pid="2229" type="custom" options=""/>
+				<ColumnOption idx="9" pid="2230" type="custom" options=""/>
+			</ArrayOptions>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete" options="instance"></OID>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>PAs</Page>
+						<Row>0</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="tab=columns:2221|0-2222|1-2223|2-2224|3-2225|4-2226|5-2227|6-2228|7-2229|8-2230|9-2239,sort:STRING-INT-INT-INT-INT-INT-INT-INT-INT-INT,width:40-90-90-90-90-90-90-90-90-90">table</Type>
+			</Measurement>
+		</Param>
+		<Param id="2221" trending="false">
+			<Name>paAlarmStatusDisplayIndex_1</Name>
+			<Description>PA</Description>
+			<Information>
+				<Text>Power Amplifier Number</Text>
+				<Subtext>The power amplifier unit number</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="2222">
+			<Name>paComms_1</Name>
+			<Description>Comms</Description>
+			<Information>
+				<Text>Power Amplifier Unit Communication Status</Text>
+				<Subtext>Indicates whether or not there is communication between the exciter or SCU and this power amplifier unit</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2223">
+			<Name>paInput_1</Name>
+			<Description>Input</Description>
+			<Information>
+				<Text>Power Amplifier Unit Input Status</Text>
+				<Subtext>Alarms when power amplifier unit input is below the threshold level</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="-1">
+						<Display state="disabled">- -</Display>
+						<Value>-1</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2224">
+			<Name>paOutput_1</Name>
+			<Description>Output</Description>
+			<Information>
+				<Text>Power Amplifier Unit Output Status</Text>
+				<Subtext>Warning or alarm when power amplifier unit output value is lower than user defined range</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="-1">
+						<Display state="disabled">- -</Display>
+						<Value>-1</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MiH>3</MiH>
+				<MaH>1;2</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>OK</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Warning</Display>
+						<Value>1</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>2</Value>
+					</Discreet>
+					<Discreet>
+						<Display>RF Switched Off</Display>
+						<Value>3</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2225">
+			<Name>paSWR_1</Name>
+			<Description>SWR</Description>
+			<Information>
+				<Text>Power Amplifier Unit Reflected Power Status</Text>
+				<Subtext>Alarms when power amplifier unit reflected power is below the defined threshold</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="-1">
+						<Display state="disabled">- -</Display>
+						<Value>-1</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2226">
+			<Name>paTemperature_1</Name>
+			<Description>Temperature</Description>
+			<Information>
+				<Text>Power Amplifier Unit Temperature Status</Text>
+				<Subtext>Indicates when the power amplifier unit temperature is too high</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="-1">
+						<Display state="disabled">- -</Display>
+						<Value>-1</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2227">
+			<Name>paFanSystem_1</Name>
+			<Description>Fan System</Description>
+			<Information>
+				<Text>Power Amplifier Unit Fan System Status</Text>
+				<Subtext>Indicates when a problem is detected in the power amplifier unit cooling system</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="-1">
+						<Display state="disabled">- -</Display>
+						<Value>-1</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2228">
+			<Name>paDcSupply_1</Name>
+			<Description>DC Supply</Description>
+			<Information>
+				<Text>Power Amplifier Unit DC Supply Status</Text>
+				<Subtext>Indicates when a problem is detected in the power amplifier unit DC power supply</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="-1">
+						<Display state="disabled">- -</Display>
+						<Value>-1</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2229">
+			<Name>paAcSupply_1</Name>
+			<Description>AC Supply</Description>
+			<Information>
+				<Text>Power Amplifier Unit AC Supply Status</Text>
+				<Subtext>Indicates when a problem is detected in the power amplifier unit AC power supply</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="-1">
+						<Display state="disabled">- -</Display>
+						<Value>-1</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Alarm</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2230">
+			<Name>paGain_1</Name>
+			<Description>Amp Gain</Description>
+			<Information>
+				<Text>Power Amplifier Unit Gain</Text>
+				<Subtext>Indicates when a failure is detected in the power amplifier unit gain</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+				<Exceptions>
+					<Exception id="1" value="-1">
+						<Display state="disabled">- -</Display>
+						<Value>-1</Value>
+					</Exception>
+				</Exceptions>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<Normal>0</Normal>
+				<MaH>1</MaH>
+			</Alarm>
+			<Measurement>
+				<Type>discreet</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Ok</Display>
+						<Value>0</Value>
+					</Discreet>
+					<Discreet>
+						<Display>Failure</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<!--
+			PA Measurements table display parameters
+		-->
+		<Param id="2240" trending="true" historySet="true">
+			<Name>paMeasurementsDisplayTable_1</Name>
+			<Description>PAs Measurements</Description>
+			<Information>
+				<Text>Power Amplifier Units Measurements</Text>
+				<Subtext>The RF and temperature measurements of the power amplifier units configured in the transmitter</Subtext>
+			</Information>
+			<Type>array</Type>
+			<ArrayOptions index="0" options="volatile;autoAdd">
+				<ColumnOption idx="0" pid="2241" type="custom" options=""/>
+				<ColumnOption idx="1" pid="2242" type="retrieved" value="" options=";save"/>
+				<ColumnOption idx="2" pid="2243" type="retrieved" value="" options=";save"/>
+				<ColumnOption idx="3" pid="2244" type="retrieved" value="" options=";save"/>
+				<ColumnOption idx="4" pid="2245" type="retrieved" value="" options=";save"/>
+				<ColumnOption idx="5" pid="2246" type="retrieved" value="" options=";save"/>
+			</ArrayOptions>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete" options="instance"></OID>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>PAs</Page>
+						<Row>1</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="tab=columns:2241|0-2242|1-2243|2-2244|3-2245|4-2246|5,sort:STRING-INT-INT-INT-INT-INT,width:40-120-120-120-120-120">table</Type>
+			</Measurement>
+		</Param>
+		<Param id="2241" trending="false">
+			<Name>paMeasurementsDisplayIndex_1</Name>
+			<Description>PA</Description>
+			<Information>
+				<Text>Power Amplifier Number</Text>
+				<Subtext>The power amplifier unit number</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="2242" historySet="true">
+			<Name>paInputPower_1</Name>
+			<Description>Input Power</Description>
+			<Information>
+				<Text>Power Amplifier Unit Input Power</Text>
+				<Subtext>Power amplifier unit input power in dBm</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>dBm</Units>
+				<Decimals>1</Decimals>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2243" trending="true" pollingInterval="300000" save="true" historySet="true">
+			<Name>paOutputPowerWatts_1</Name>
+			<Description>Output Power</Description>
+			<Information>
+				<Text>Power Amplifier Unit Output Power</Text>
+				<Subtext>Power amplifier unit output power in Watts</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>W</Units>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2244" historySet="true">
+			<Name>paReflectedPower_1</Name>
+			<Description>Reflected Power</Description>
+			<Information>
+				<Text>Power Amplifier Unit Reflected Power</Text>
+				<Subtext>Power amplifier unit return loss in dB</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>dB</Units>
+				<Decimals>1</Decimals>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2245" historySet="true">
+			<Name>paAmpTemp_1</Name>
+			<Description>Amp Temp</Description>
+			<Information>
+				<Text>Power Amplifier Unit Temperature</Text>
+				<Subtext>Temperature measured in zone 1 of the power amplifier unit</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>deg C</Units>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2246" historySet="true">
+			<Name>paInletTemp_1</Name>
+			<Description>Inlet Temp</Description>
+			<Information>
+				<Text>Power Amplifier Unit Inlet Temperature</Text>
+				<Subtext>Temperature measured in zone 2 of the power amplifier unit</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>deg C</Units>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<!--
+			PA Hardware Status table display parameters
+		-->
+		<Param id="2260" trending="false">
+			<Name>paHardwareStatusTable_1</Name>
+			<Description>PAs Hardware Status</Description>
+			<Information>
+				<Text>Power Amplifier Units Hardware Status</Text>
+				<Subtext>The power supply measurements, fan speeds and version information of the power amplifier units configured in the transmitter</Subtext>
+			</Information>
+			<Type>array</Type>
+			<ArrayOptions index="0" options="volatile;autoAdd">
+				<ColumnOption idx="0" pid="2261" type="custom" options=""/>
+				<ColumnOption idx="1" pid="2276" type="custom" options=""/>
+				<ColumnOption idx="2" pid="2277" type="custom" options=""/>
+				<ColumnOption idx="3" pid="2278" type="custom" options=""/>
+				<ColumnOption idx="4" pid="2279" type="custom" options=""/>
+				<ColumnOption idx="5" pid="2264" type="custom" options=""/>
+				<ColumnOption idx="6" pid="2266" type="custom" options=""/>
+				<ColumnOption idx="7" pid="2268" type="custom" options=""/>
+				<ColumnOption idx="8" pid="2270" type="custom" options=""/>
+			</ArrayOptions>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<SNMP>
+				<Enabled>true</Enabled>
+				<OID type="complete" options="instance"></OID>
+			</SNMP>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>PAs</Page>
+						<Row>2</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type options="tab=columns:2261|0-2276|1-2277|2-2278|3-2279|4-2264|5-2266|6-2268|7-2270,sort:STRING-INT-INT-INT-INT-INT-INT-INT-INT-INT=INT,width:40-80-80-80-80-80-80-80-80">table</Type>
+			</Measurement>
+		</Param>
+		<Param id="2261" trending="false">
+			<Name>paHardwareStatusIndex_1</Name>
+			<Description>PA</Description>
+			<Information>
+				<Text>Power Amplifier Number</Text>
+				<Subtext>The power amplifier unit number</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+			</Display>
+			<Measurement>
+				<Type>string</Type>
+			</Measurement>
+		</Param>
+		<Param id="2264">
+			<Name>paPs1VAmp_1</Name>
+			<Description>PS1 V Amp</Description>
+			<Information>
+				<Text>Power Supply 1 Amplifier Voltage</Text>
+				<Subtext>The amplifier voltage for the power supply in location 1 of the power amplifier unit (if fitted)</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>V</Units>
+				<Decimals>1</Decimals>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2266">
+			<Name>paPs1IAmp_1</Name>
+			<Description>PS1 I Amp</Description>
+			<Information>
+				<Text>Power Supply 1 Amplifier Current</Text>
+				<Subtext>The amplifier current for the power supply in location 1 of the power amplifier unit (if fitted)</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>A</Units>
+				<Decimals>1</Decimals>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2268">
+			<Name>paPs2VAmp_1</Name>
+			<Description>PS2 V Amp</Description>
+			<Information>
+				<Text>Power Supply 2 Amplifier Voltage</Text>
+				<Subtext>The amplifier voltage for the power supply in location 2 of the power amplifier unit (if fitted)</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>V</Units>
+				<Decimals>1</Decimals>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2270">
+			<Name>paPs2IAmp_1</Name>
+			<Description>PS2 I Amp</Description>
+			<Information>
+				<Text>Power Supply 2 Amplifier Current</Text>
+				<Subtext>The amplifier current for the power supply in location 2 of the power amplifier unit (if fitted)</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>A</Units>
+				<Decimals>1</Decimals>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2276">
+			<Name>paPWM1_1</Name>
+			<Description>PWM 1</Description>
+			<Information>
+				<Text>PWM Zone 1</Text>
+				<Subtext>Fans PWM setting for zone 1 of the power amplifier unit</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>%</Units>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2277">
+			<Name>paFan1Rpm_1</Name>
+			<Description>Fan 1</Description>
+			<Information>
+				<Text>Fan 1 RPM</Text>
+				<Subtext>RPM measured for this fan in the power amplifier unit</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>rpm</Units>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2278">
+			<Name>paFan2Rpm_1</Name>
+			<Description>Fan 2</Description>
+			<Information>
+				<Text>Fan 2 RPM</Text>
+				<Subtext>RPM measured for this fan in the power amplifier unit</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>rpm</Units>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="2279">
+			<Name>paFan3Rpm_1</Name>
+			<Description>Fan 3</Description>
+			<Information>
+				<Text>Fan 3 RPM</Text>
+				<Subtext>RPM measured for this fan in the power amplifier unit</Subtext>
+			</Information>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Units>rpm</Units>
+			</Display>
+			<Alarm>
+				<Monitored>true</Monitored>
+				<CL></CL>
+				<MaL></MaL>
+				<MiL></MiL>
+				<WaL></WaL>
+				<Normal></Normal>
+				<WaH></WaH>
+				<MiH></MiH>
+				<MaH></MaH>
+				<CH></CH>
+			</Alarm>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+	</Params>
+	<QActions>
+		<QAction id="1" name="Precompiled Code" encoding="csharp" options="precompile">
+			<![CDATA[namespace Skyline.Protocol
+{
+    using System;
+    using System.Collections.Generic;
+
+    namespace FleetOutlierRadar
+    {
+        #region Enumerations
+        #endregion
+
+        #region Structs
+        #endregion
+
+        #region Classes
+
+        public class DABDataPoint
+        {
+            public DateTime Time { get; }
+            public double PA1 { get; }
+            public double PA2 { get; }
+            public double PA3 { get; }
+            public double TotalOutputPower { get; }
+            public DABDataPoint(DateTime time, double pa1, double pa2, double pa3, double totalOutputPower)
+            {
+                Time = time;
+                PA1 = pa1;
+                PA2 = pa2;
+                PA3 = pa3;
+                TotalOutputPower = totalOutputPower;
+            }
+        }
+
+        public class DABData
+        {
+            private List<double> PA1_;
+            private List<double> PA2_;
+            private List<double> PA3_;
+            private List<double> TotalOutputPower_;
+
+            public DABData(List<double> pa1, List<double> pa2, List<double> pa3, List<double> totalOutputPower)
+            {
+                PA1_ = pa1;
+                PA2_ = pa2;
+                PA3_ = pa3;
+                TotalOutputPower_ = totalOutputPower;
+            }
+
+            public DABDataPoint GetValue(DateTime startTime, int index)
+            {
+                var time = startTime.AddMinutes(index * Data.POLLING_TIME.TotalMinutes);
+                return new DABDataPoint(time, PA1_[index], PA2_[index], PA3_[index], TotalOutputPower_[index]);
+            }
+        }
+
+        public static class Data
+        {
+            public static bool FastVersion = false;
+            public static TimeSpan START_TIME_AGO = TimeSpan.FromDays(14);
+            public static TimeSpan POLLING_TIME = TimeSpan.FromMinutes(5);
+
+            private static DABData Data_ = new DABData(
+                pa1: new List<double> 
+                {
+                    //PROTOCOL_DATA_PA1
+                },
+                pa2: new List<double> 
+                {
+                    //PROTOCOL_DATA_PA2
+                },
+                pa3: new List<double> 
+                {
+                    //PROTOCOL_DATA_PA3
+                },
+                totalOutputPower: new List<double> 
+                {
+                    //PROTOCOL_DATA_TOTAL_OUTPUT_POWER
+                }
+                );
+
+            public static DABData GetDABData()
+            {
+                return Data_;
+            }
+        }
+        #endregion
+    }
+}]]>
+		</QAction>
+		<QAction id="2" name="After Startup" encoding="csharp" triggers="2" dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll">
+			<![CDATA[
+using System;
+using Skyline.DataMiner.Scripting;
+using System.Threading;
+using Skyline.Protocol.FleetOutlierRadar;
+
+public class QAction
+{
+    public static void Run(SLProtocolExt protocol) //runs on startup
+    {
+        protocol.Log("QAction 2 is running");
+		
+		int pa_count = 3;
+		
+		protocol.SetParameter(6, "Initialization in progress...");
+
+		protocol.SetParameter(9, 0); //initialization still in progress
+		
+		//set some parameter values
+		
+        protocol.SetParameter(2201, pa_count); //pa count
+		protocol.SetParameter(1001, 0);
+		protocol.SetParameter(120, 0); //Exciter A comms alarm status
+		protocol.SetParameter(121, 0); //Exciter B comms alarm status
+		protocol.SetParameter(100,"23.23.112.116");	//System Control Unit ip 
+		protocol.SetParameter(122, 0);
+		protocol.SetParameter(123, 0);
+		protocol.SetParameter(124, 0);
+		protocol.SetParameter(125, 0);
+		protocol.SetParameter(126, 0);
+		protocol.SetParameter(130, 0);
+		protocol.SetParameter(160, 1);
+		protocol.SetParameter(161, 0);
+		protocol.SetParameter(162, 0);
+		protocol.SetParameter(167, 0);
+		protocol.SetParameter(1003, 0);
+		protocol.SetParameter(1005, 0);
+		protocol.SetParameter(1023, 0.5);
+		protocol.SetParameter(1024, 27.12);
+		protocol.SetParameter(2202, 2);
+		protocol.SetParameter(1042, 1100);
+		
+			
+		//set alarm status table
+		object[] new_row = (object[]) protocol.NewRow();
+		object[] set_row = new object[10];
+		set_row[1] = 0;						
+		set_row[2] = 0;
+		set_row[3] = 0;
+		set_row[4] = 0;
+		set_row[5] = 0;
+		set_row[6] = 0;
+		set_row[7] = 0;
+		set_row[8] = 0;
+		set_row[9] = 0;
+		for (int i = 0; i < pa_count; i++) {
+			string row_key = "PA" + (i+1).ToString();
+			set_row[0] = row_key;
+			protocol.SetRow(2220, row_key, set_row);
+		}
+		
+		//set hardware status table
+		for (int i = 0; i < pa_count; i++) {
+				//object[] n_row = (object[]) protocol.NewRow();
+				object[] row = new object[9];
+				string row_key = "PA" + (i+1).ToString();
+				row[0] = row_key;
+				row[1] = 20;
+				if(i==1){
+					row[2] = 6866;
+					row[3] = 6894;
+					row[4] = 6937;
+				}
+				else if(i==2){
+					row[2] = 7009;
+					row[3] = 7009;
+					row[4] = 7008;			
+				}
+				else {
+					row[2] = 6739;
+					row[3] = 6739;
+					row[4] = 6739;			
+				}
+				protocol.SetRow(2260, row_key, row);
+				Thread.Sleep(10);
+		}
+		Thread.Sleep(120000); //Delay to prioritize data processing of other elements.	
+		protocol.Started = "Initialized";
+        var startTime = DateTime.Now - Data.START_TIME_AGO;
+        protocol.Starttime = startTime;
+        protocol.Started = "Yes";
+    }
+
+}
+
+
+]]>
+		</QAction>
+		<QAction id="4" encoding="CSharp" triggers="3" dllImport="[ProtocolName].[ProtocolVersion].QAction.1.dll">
+			<![CDATA[using System;
+using Skyline.DataMiner.Scripting;
+using System.Globalization;
+using Skyline.Protocol.FleetOutlierRadar;
+
+public class QAction
+{
+    public static void Run(SLProtocolExt protocol) //Adds a new datapoint if needed  //slowly building up history of data
+    {
+        if (protocol.Busy == "Yes")
+            return;
+        var started = protocol.Started as string;
+        if (started == "No")
+            return;
+
+        protocol.Log(8, 5, "Generating history data");
+        protocol.Busy = "Yes";
+        protocol.Initialization = "Building up history data...";
+
+        DateTime startTime = DateTime.FromOADate(Convert.ToDouble(protocol.Starttime));
+        int lastRow = int.Parse(protocol.Lastrownumber.ToString(), CultureInfo.InvariantCulture);
+
+        int dataIndex = int.Parse(protocol.Dataindex.ToString(), CultureInfo.InvariantCulture);
+        var data = Data.GetDABData();
+        var endTime = DateTime.Now - TimeSpan.FromHours(1);
+        int maxValuesPerTime = Data.FastVersion ? 2000 : 200;
+
+        int valuesPushed = 0;
+        for (int j = lastRow + 1; j < lastRow + maxValuesPerTime + 1; ++j)
+        {
+            var dataPoint = data.GetValue(startTime, j);
+            if (dataPoint.Time >= endTime)
+                break;
+
+            SetValues(protocol, dataPoint);
+            valuesPushed++;
+        }
+
+        protocol.Lastrownumber = lastRow + valuesPushed;
+        if (valuesPushed < maxValuesPerTime)
+        {
+            protocol.Log(8, 5, "Finished generating history data");
+            protocol.Initialization = "History generated";
+        }
+        else
+        {
+            protocol.Log(8, 5, "Partially finished generating history data");
+            protocol.Initialization = "Waiting to generate more history";
+        }
+        protocol.Busy = "No";
+    }
+
+    private static void SetValues(SLProtocolExt protocol, DABDataPoint dataPoint)
+    {
+        protocol.SetParameter(Parameter.txamplifieroutputpowerwatts, dataPoint.TotalOutputPower, dataPoint.Time);
+
+        object[] row = new object[6];
+        string row_key = "PA1";
+        row[1] = -12.3;
+        row[2] = dataPoint.PA1;
+        row[3] = 24.4;
+        row[4] = 40;
+        row[5] = 31;
+        protocol.SetRow(Parameter.Pameasurementsdisplaytable_1.tablePid, row_key, row, dataPoint.Time, false);
+
+        row = new object[6];
+        row_key = "PA2";
+        row[1] = -12.1;
+        row[2] = dataPoint.PA2;
+        row[3] = 19.8;
+        row[4] = 41;
+        row[5] = 33;
+        protocol.SetRow(Parameter.Pameasurementsdisplaytable_1.tablePid, row_key, row, dataPoint.Time, false);
+
+        row = new object[6];
+        row_key = "PA3";
+        row[1] = -12.6;
+        row[2] = dataPoint.PA3;
+        row[3] = 23.3;
+        row[4] = 42;
+        row[5] = 32;
+        protocol.SetRow(Parameter.Pameasurementsdisplaytable_1.tablePid, row_key, row, dataPoint.Time, false);
+    }
+}
+
+]]>
+		</QAction>
+	</QActions>
+	<Groups>
+		<Group id="2">
+			<Name>After Startup</Name>
+			<Description>After Startup</Description>
+			<Type>poll action</Type>
+			<Content>
+				<Action>2</Action>
+			</Content>
+		</Group>
+		<Group id="1">
+			<Type>poll action</Type>
+			<Content>
+				<Action>4</Action>
+			</Content>
+		</Group>
+		<Group id="2020">
+			<Name>paStatusTable</Name>
+			<Description>PA Status Table</Description>
+			<Condition><![CDATA[(id:2201 > 1)]]></Condition>
+			<Content>
+				<Param>2020</Param>
+			</Content>
+		</Group>
+	</Groups>
+	<Triggers>
+		<Trigger id="1">
+			<Name>After Startup</Name>
+			<On>protocol</On>
+			<Time>after startup</Time>
+			<Type>action</Type>
+			<Content>
+				<Id>1</Id>
+			</Content>
+		</Trigger>
+		<Trigger id="5">
+			<Name>Set History Data</Name>
+			<Type>action</Type>
+			<Content>
+				<Id>5</Id>
+			</Content>
+		</Trigger>
+	</Triggers>
+	<Actions>
+		<Action id="1">
+			<Name>After Startup Group</Name>
+			<On id="2">group</On>
+			<Type>execute next</Type>
+		</Action>
+		<Action id="2">
+			<Name>After Startup QAction</Name>
+			<On id="2">parameter</On>
+			<Type>run actions</Type>
+		</Action>
+		<Action id="4">
+			<On id="3">parameter</On>
+			<Type>run actions</Type>
+		</Action>
+		<Action id="5">
+			<Name>Set History Data</Name>
+			<On id="5">parameter</On>
+			<Type>run actions</Type>
+		</Action>
+	</Actions>
+	<Timers>
+		<Timer id="1">
+			<Name>Timer1</Name>
+			<Time initial="random=0:30">30000</Time>
+			<!-- 30 sec-->
+			<Content>
+				<Group>1</Group>
+			</Content>
+		</Timer>
+	</Timers>
+</Protocol>

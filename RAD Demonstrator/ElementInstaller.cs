@@ -1,6 +1,11 @@
 ﻿namespace Elements
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Threading;
+	using Skyline.DataMiner.Analytics.DataTypes;
+	using Skyline.DataMiner.Analytics.Rad;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
@@ -10,6 +15,11 @@
 	internal class ElementInstaller
 	{
 		private readonly IEngine engine;
+		private readonly List<string> protocolSuffixes_ = new List<string> {
+			"22_1083", "23_146_", "23_196_", "23_19_1", "23_265_", "23_323_", "23_388_", "23_560_", "23_565_", "23_64_1",
+			"23_739_", "24_310_", "24_7_10", "28_25_1", "28_568_", "30_100_", "30_30_1", "30_424_", "30_639_", "30_751_",
+			"34_1628", "34_1656", "34_1862", "34_240_", "34_282_", "34_298_", "51_576_", "60_118_", "66_349_",
+		};
 
 		public ElementInstaller(IEngine engine)
 		{
@@ -19,10 +29,37 @@
 		public void InstallDefaultContent()
 		{
 			int LondonViewID = CreateViews(new string[] { "DataMiner Catalog", "Using Relational Anomaly Detection", "London" });
-			CreateElement($"RAD - Commtia LON 1", "Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
-			CreateElement($"RAD - Commtia LON 2", "Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
-			CreateElement($"RAD - Commtia LON 3", "Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
-			CreateElement($"RAD - Commtia LON 4", "Commtia DAB - Deviating", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			CreateElement($"RAD - Commtia LON 1", "AI - Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			CreateElement($"RAD - Commtia LON 2", "AI - Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			CreateElement($"RAD - Commtia LON 3", "AI - Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			CreateElement($"RAD - Commtia LON 4", "AI - Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			CreateElement($"RAD - Commtia LON 5", "AI - Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+
+			int radFleetOutlierViewID = CreateViews(new string[] { "DataMiner Catalog", "Using Relational Anomaly Detection", "RAD Fleet Outlier" });
+			for (int i = 0; i < protocolSuffixes_.Count; ++i)
+				CreateElement($"AI - RAD - Commtia LON {(i + 1):D2}", "Fleet-Outlier-Detection-Commtia DAB", $"1.0.0.1-outlier-radar-{protocolSuffixes_[i]}", radFleetOutlierViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+
+			var dms = engine.GetDms();
+			//Verify the elements were all created.
+			while (dms.GetElements().Where(e => e.Name.Contains("AI - RAD - Commtia LON")).Count() != 29)
+			{
+				Thread.Sleep(TimeSpan.FromSeconds(10));
+			}
+
+			//Create the RAD shared Group for the AI - RAD - Commtia LON elements
+			var subgroupInfos = dms.GetElements()
+				.Where(e => e.Name.StartsWith("AI - RAD - Commtia LON"))
+				.Select(e => new RADSubgroupInfo(e.Name, new List<RADParameter>()
+				{
+					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 2243, "PA1"), "PA1"),
+					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 2243, "PA2"), "PA2"),
+					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 2243, "PA3"), "PA3"),
+					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 1022), "Total Output Power"),
+				}))
+				.ToList();
+			var groupInfo = new RADGroupInfo("AI - RAD - Commtia", subgroupInfos, false);
+			var request = new AddRADParameterGroupMessage(groupInfo);
+			engine.SendSLNetMessage(request);
 		}
 
 		private void AssignVisioToView(int viewID, string visioFileName)

@@ -1,0 +1,898 @@
+﻿<Template>
+	<Name>AlarmTemplate_PA_Demo</Name>
+	<Description></Description>
+	<Type>template</Type>
+	<InterpreteVersion>1</InterpreteVersion>
+	<Protocol>
+		<Name>AI - Commtia DAB</Name>
+		<Version>1.0.0.1-fast</Version>
+	</Protocol>
+	<Conditions>
+	</Conditions>
+	<Schedule enabled="False">
+	</Schedule>
+	<Params>
+		<Param id="120">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="121">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="122">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="123">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="124">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="125">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="126">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="130">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="160">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH >1</MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="161">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH >1</CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="162">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >2</MaH>
+				<CH ></CH>
+				<Info>0;1</Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="167">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1;2</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="1001">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH >-1</MiH>
+				<MaH >1</MaH>
+				<CH >2</CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="1003">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="1005">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2222">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">true</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2223">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">true</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2224">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">true</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH >3</MiH>
+				<MaH >1;2</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2225">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">true</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2226">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">true</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2227">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">true</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2228">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">true</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2229">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">true</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2230">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">true</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal>0</Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH >1</MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2242">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2243">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2244">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2245">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2246">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2264">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2266">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2268">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2270">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2276">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2277">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2278">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="2279">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65000">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65002">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65003">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65004">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65005">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65006">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65007">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65008">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65009">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65022">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65029">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65030">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65053">
+			<Alarm filter="*" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65118">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65121">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="65130">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="66163">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+		<Param id="66189">
+			<Alarm filter="" hysteresis=";" type="Normal">
+				<Monitored disabledIf="" varianceMonitor="false" trendMonitor="false" levelShiftMonitor="false" flatLineMonitor="false">false</Monitored>
+				<CL ></CL>
+				<MaL ></MaL>
+				<MiL ></MiL>
+				<WaL ></WaL>
+				<Normal></Normal>
+				<WaH ></WaH>
+				<MiH ></MiH>
+				<MaH ></MaH>
+				<CH ></CH>
+				<Info></Info>
+				<SmartBaseLine enable="0" cyclic="False" handleWeekends="True" intervalLength="604800" numIntervals="1" intervalOffset="0" averageType="median"></SmartBaseLine>
+			</Alarm>
+		</Param>
+	</Params>
+	<Templates>
+	</Templates>
+</Template>
