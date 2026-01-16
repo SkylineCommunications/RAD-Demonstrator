@@ -37,18 +37,13 @@
 
 			int radFleetOutlierViewID = CreateViews(new string[] { "DataMiner Catalog", "Using Relational Anomaly Detection", "RAD Fleet Outlier" });
 			for (int i = 0; i < protocolSuffixes_.Count; ++i)
-				CreateElement($"AI - RAD - Commtia LON {(i + 1):D2}", "Fleet-Outlier-Detection-Commtia DAB", $"1.0.0.1-outlier-radar-{protocolSuffixes_[i]}", radFleetOutlierViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+				CreateElement($"Fleet-Outlier-Detection-Commtia {(i + 1):D2}", "Fleet-Outlier-Detection-Commtia DAB", $"1.0.0.1-outlier-radar-{protocolSuffixes_[i]}", radFleetOutlierViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
 
+			Thread.Sleep(200000); //Wait for elements to be created and data to be read in.
 			var dms = engine.GetDms();
-			//Verify the elements were all created.
-			while (dms.GetElements().Where(e => e.Name.Contains("AI - RAD - Commtia LON")).Count() != 29)
-			{
-				Thread.Sleep(TimeSpan.FromSeconds(10));
-			}
-
-			//Create the RAD shared Group for the AI - RAD - Commtia LON elements
+			//Create the RAD shared Group for the Fleet-Outlier-Detection-Commtia elements
 			var subgroupInfos = dms.GetElements()
-				.Where(e => e.Name.StartsWith("AI - RAD - Commtia LON"))
+				.Where(e => e.Name.StartsWith("Fleet-Outlier-Detection-Commtia"))
 				.Select(e => new RADSubgroupInfo(e.Name, new List<RADParameter>()
 				{
 					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 2243, "PA1"), "PA1"),
@@ -57,7 +52,7 @@
 					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 1022), "Total Output Power"),
 				}))
 				.ToList();
-			var groupInfo = new RADGroupInfo("AI - RAD - Commtia", subgroupInfos, false);
+			var groupInfo = new RADGroupInfo("Fleet-Outlier-Group", subgroupInfos, false);
 			var request = new AddRADParameterGroupMessage(groupInfo);
 			engine.SendSLNetMessage(request);
 		}

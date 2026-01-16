@@ -3347,7 +3347,7 @@ public class QAction
 				protocol.SetRow(2260, row_key, row);
 				Thread.Sleep(10);
 		}
-		Thread.Sleep(120000); //Delay to prioritize data processing of other elements.	
+			
 		protocol.Started = "Initialized";
         var startTime = DateTime.Now - Data.START_TIME_AGO;
         protocol.Starttime = startTime;

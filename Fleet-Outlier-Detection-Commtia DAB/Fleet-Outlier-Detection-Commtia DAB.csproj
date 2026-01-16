@@ -8,6 +8,10 @@
     <Nullable>enable</Nullable>
 	<DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Files\Protocol\" />
+  </ItemGroup>
   <Target Name="BuildProtocolPackage" AfterTargets="AfterBuild">
   <Message Text="This custom target build the dmproject package" />
   <Exec Command="python &quot;$(ProjectDir)/create_dab_dmprotocol.py&quot; --output-dir &quot;$(SolutionDir)/$(SolutionName)/SetupContent/Protocols&quot; --package-name &quot;$(ProjectName)&quot; --data-dir &quot;$(ProjectDir)/Data&quot; &quot;$(ProjectDir)/Files&quot;" />
