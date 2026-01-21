@@ -39,7 +39,20 @@
 			for (int i = 0; i < protocolSuffixes_.Count; ++i)
 				CreateElement($"Fleet-Outlier-Detection-Commtia {(i + 1):D2}", "Fleet-Outlier-Detection-Commtia DAB", $"1.0.0.1-outlier-radar-{protocolSuffixes_[i]}", radFleetOutlierViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
 
-			Thread.Sleep(200000); //Wait for elements to be created and data to be read in.
+			Thread.Sleep(60000); //Wait for elements to be created and data to be read in.
+
+			try
+			{
+				engine.Log("Removing existing RAD group if it exists");
+				var removeGroupIfExistsRequest = new RemoveRADParameterGroupMessage("Fleet-Outlier-Group");
+				engine.SendSLNetMessage(removeGroupIfExistsRequest);
+				Thread.Sleep(10000); //Wait for group to be removed
+			}
+			catch (Exception e)
+			{
+				engine.Log($"Not needed to remove RAD group as it didn't exist yet");
+			}
+
 			var dms = engine.GetDms();
 			//Create the RAD shared Group for the Fleet-Outlier-Detection-Commtia elements
 			var subgroupInfos = dms.GetElements()
@@ -153,7 +166,7 @@
 			};
 
 			var dms = engine.GetDms();
-			if (dms.ElementExists(elementName))
+			if (dms.ElementExists(elementName)) //Delete element first if it already exists
 			{
 				var elementRequest = new GetElementByNameMessage(elementName);
 				var elementResponse = engine.SendSLNetSingleResponseMessage(elementRequest);
@@ -163,9 +176,23 @@
 				// Remove the element if it exists
 				var deleteRequest = new SetElementStateMessage(elementInfo.DataMinerID, elementInfo.ElementID, Skyline.DataMiner.Net.Messages.ElementState.Deleted, true);
 				engine.SendSLNetMessage(deleteRequest);
-				System.Threading.Thread.Sleep(TimeSpan.FromSeconds(15));
+				System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
 			}
 
+			//Verify deletion succeeded
+			for (int i = 0; i < 5; ++i)
+			{
+				if (dms.ElementExists(elementName))
+				{
+					Thread.Sleep(5000);
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			//create element
 			engine.SendSLNetSingleResponseMessage(request);
 		}
 	}
