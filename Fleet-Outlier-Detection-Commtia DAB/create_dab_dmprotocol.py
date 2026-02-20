@@ -37,6 +37,10 @@ def replace_placeholders(protocol_dir, output_dir, protocol_version_suffix, data
             content = content.replace('//PROTOCOL_DATA_PA2', ',\n'.join(data['pa2']))
             content = content.replace('//PROTOCOL_DATA_PA3', ',\n'.join(data['pa3']))
             content = content.replace('//PROTOCOL_DATA_TOTAL_OUTPUT_POWER', ',\n'.join(data['total_output_power']))
+            if len(data['total_output_power']) > 5000:
+                 content = content.replace('{START_TIME_AGO}', 'TimeSpan.FromDays(8)')
+            else:
+                 content = content.replace('{START_TIME_AGO}', 'TimeSpan.FromDays(4)') #shorter time for outlier datasets 
 
         
         relative_path = input_path.relative_to(protocol_dir)

@@ -1,10 +1,10 @@
-namespace ConfigureLondonDABSharedModelGroup
+namespace ConfigureFleetOutlierDetectionGroup
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using Skyline.DataMiner.Analytics.DataTypes;
-	using Skyline.DataMiner.Analytics.Rad;
+	using Skyline.DataMiner.Analytics.Rad; 
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
 
@@ -13,11 +13,12 @@ namespace ConfigureLondonDABSharedModelGroup
 	/// </summary>
 	public class Script
 	{
-
-		//For a shared model groups, we have multiple similar setups: e.g. 100 different dab transmitters = 100 similar setups.
-		// Each setup is called a "subgroup" and looks similar: so a parameter in one subgroup has a natural counterpart to a parameter in every other subgroup.
-		// These parameters do not need to have the same name in DataMiner: e.g. you may be monitoring a linux and a windows server and the cpu usage parameter may be called differently on both systems: e.g. total processor load vs. cpu usage.
-		// We will assign a nice name to each global group parameter.
+		// For shared model groups, we have multiple similar setups (e.g. 100 transmitters = 100 similar setups).
+		// Each setup is called a "subgroup" and looks similar: a parameter in one subgroup has a natural counterpart
+		// to a parameter in every other subgroup.
+		//
+		// These parameters do not need to have the same name in DataMiner (e.g. Linux vs Windows CPU naming).
+		// We map each element-specific parameter to a consistent, user-friendly name in the shared model group.
 		public const string TOTALOUTPUTPOWER = "Tx Amplifier Output Power";
 		public const string OUTPUTPOWERPA1 = "PA1 Output Power";
 		public const string OUTPUTPOWERPA2 = "PA2 Output Power";
@@ -63,34 +64,46 @@ namespace ConfigureLondonDABSharedModelGroup
 		private void RunSafe(IEngine engine)
 		{
 			// Resolve the DataMiner System (DMS) API handle from the Automation engine.
+			// This is used to query elements and to push RAD group configurationt.
 			var dms = engine.GetDms();
 
-			// Build the list of "subgroups" for the shared model group:
-			// - One subgroup per matching element (name starts with "RAD - Commtia LON ").
-			// - Each subgroup maps a set of element parameters (ParameterKey) to a shared, user-friendly group parameter name.
-			//   This is what makes different elements comparable in the same RAD model, even if their internal naming differs.
+			// Create one RAD subgroup per matching element.
+			// The filter below selects all elements that should participate in the fleet outlier detection group.
+			//
+			// Each subgroup contains a mapping from an element-specific ParameterKey towards a shared model parameter name,
+			// allowing RAD to compare "the same" metric across the entire fleet.
 			var subgroupInfos = dms.GetElements()
-				.Where(e => e.Name.StartsWith("RAD - Commtia LON "))
+				.Where(e => e.Name.StartsWith("Fleet-Outlier-Detection-Commtia"))
 				.Select(e => new RADSubgroupInfo(e.Name, new List<RADParameter>()
 				{
-					// Per-PA output powers (parameter 2243, indexed by "PA1/PA2/PA3").
+					// Parameter 2243 is indexed; each PA ("PA1/PA2/PA3") is mapped to a distinct shared name.
 					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 2243, "PA1"), OUTPUTPOWERPA1),
 					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 2243, "PA2"), OUTPUTPOWERPA2),
 					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 2243, "PA3"), OUTPUTPOWERPA3),
 
-					// Total transmitter output power (parameter 1022).
+					// Parameter 1022 represents the total output power for the transmitter.
 					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 1022), TOTALOUTPUTPOWER),
 				}))
 				.ToList();
 
-			// Create the RAD group:
-			// - "DAB Fleet" is the group name as it will appear in RAD.
-			// - subgroupInfos defines which elements participate and how their parameters map into the shared model.
-			// - The final boolean controls whether the model should update with new incoming data (true) or only upon manual retraining (false).
-			var groupInfo = new RADGroupInfo("DAB Fleet", subgroupInfos, false);
+			// Create or update the RAD parameter group used for fleet outlier detection.
+			// The extra numeric arguments configure outlier detection behavior for this group (e.g. sensitivity/windowing),
+			// and are passed through to the RAD backend as part of the group definition.
+			var groupInfo = new RADGroupInfo("Fleet-Outlier-Group", subgroupInfos, false, 3, 5);
 
-			// Send a request to add the RAD parameter group configuration in DataMiner.
+			// Prepare the SLNet message that will add/update the RAD group configuration.
 			var request = new AddRADParameterGroupMessage(groupInfo);
+
+			// Configure training:
+			// Train using a fixed lookback window (last 8 days up to "now").
+			List<TimeRange> timeRanges = new List<TimeRange>
+			{
+				new TimeRange(DateTime.UtcNow.AddDays(-8), DateTime.UtcNow)
+			};
+
+			request.TrainingConfiguration = new TrainingConfiguration(timeRanges);
+
+			// Push the configuration to DataMiner.
 			engine.SendSLNetMessage(request);
 		}
 	}

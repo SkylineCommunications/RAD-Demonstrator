@@ -22,6 +22,6 @@ The package will also create the following DataMiner elements in the Cube Survey
    - RAD - Commtia LON 4
    - RAD - Commtia LON 5
 
-Finally, it will create 29 additional elements *Fleet-Outlier-Detection-Commtia 01*, *Fleet-Outlier-Detection-Commtia 02*,... 
-until *Fleet-Outlier-Detection-Commtia 29* in the Cube Surveyor under *DataMiner Catalog* > *Using Relational Anomaly Detection* > *RAD Fleet Outlier*.
+Finally, it will create 13 additional elements *Fleet-Outlier-Detection-Commtia 01*, *Fleet-Outlier-Detection-Commtia 02*,... 
+until *Fleet-Outlier-Detection-Commtia 13* in the Cube Surveyor under *DataMiner Catalog* > *Using Relational Anomaly Detection* > *RAD Fleet Outlier*.
 

@@ -16,10 +16,8 @@
 	{
 		private readonly IEngine engine;
 		private readonly List<string> protocolSuffixes_ = new List<string> {
-			"22_1083", "23_146_", "23_196_", "23_19_1", "23_265_", "23_323_", "23_388_", "23_560_", "23_565_", "23_64_1",
-			"23_739_", "24_310_", "24_7_10", "28_25_1", "28_568_", "30_100_", "30_30_1", "30_424_", "30_639_", "30_751_",
-			"34_1628", "34_1656", "34_1862", "34_240_", "34_282_", "34_298_", "51_576_", "60_118_", "66_349_",
-		};
+			"22_1083", "23_196_", "23_388_", "24_7_10", "24_310_", "30_30_1", "30_639_", "30_751_","23_565_", "28_25_1",
+			"34_240_", "34_1862","51_576_",};
 
 		public ElementInstaller(IEngine engine)
 		{
@@ -35,39 +33,34 @@
 			CreateElement($"RAD - Commtia LON 4", "AI - Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
 			CreateElement($"RAD - Commtia LON 5", "AI - Commtia DAB", "1.0.0.1-fast", LondonViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
 
-			int radFleetOutlierViewID = CreateViews(new string[] { "DataMiner Catalog", "Using Relational Anomaly Detection", "RAD Fleet Outlier" });
-			for (int i = 0; i < protocolSuffixes_.Count; ++i)
-				CreateElement($"Fleet-Outlier-Detection-Commtia {(i + 1):D2}", "Fleet-Outlier-Detection-Commtia DAB", $"1.0.0.1-outlier-radar-{protocolSuffixes_[i]}", radFleetOutlierViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			Thread.Sleep(5000);
 
-			Thread.Sleep(60000); //Wait for elements to be created and data to be read in.
+			int radFleetOutlierViewID = CreateViews(new string[] { "DataMiner Catalog", "Using Relational Anomaly Detection", "RAD Fleet Outlier" });
+			try
+			{
+				for (int i = 0; i < protocolSuffixes_.Count; ++i)
+				{
+					CreateElement($"Fleet-Outlier-Detection-Commtia {(i + 1):D2}", "Fleet-Outlier-Detection-Commtia DAB", $"1.0.0.1-outlier-radar-{protocolSuffixes_[i]}", radFleetOutlierViewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+					Thread.Sleep(5000);
+				}
+			}
+			catch (Exception e)
+			{
+				engine.Log($"Error while creating elements: {e}");
+			}
+		
+			Thread.Sleep(10000); 
 
 			try
 			{
 				engine.Log("Removing existing RAD group if it exists");
 				var removeGroupIfExistsRequest = new RemoveRADParameterGroupMessage("Fleet-Outlier-Group");
-				engine.SendSLNetMessage(removeGroupIfExistsRequest);
-				Thread.Sleep(10000); //Wait for group to be removed
+				engine.SendSLNetMessage(removeGroupIfExistsRequest);				
 			}
 			catch (Exception e)
 			{
 				engine.Log($"Not needed to remove RAD group as it didn't exist yet");
 			}
-
-			var dms = engine.GetDms();
-			//Create the RAD shared Group for the Fleet-Outlier-Detection-Commtia elements
-			var subgroupInfos = dms.GetElements()
-				.Where(e => e.Name.StartsWith("Fleet-Outlier-Detection-Commtia"))
-				.Select(e => new RADSubgroupInfo(e.Name, new List<RADParameter>()
-				{
-					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 2243, "PA1"), "PA1"),
-					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 2243, "PA2"), "PA2"),
-					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 2243, "PA3"), "PA3"),
-					new RADParameter(new ParameterKey(e.DmsElementId.AgentId, e.DmsElementId.ElementId, 1022), "Total Output Power"),
-				}))
-				.ToList();
-			var groupInfo = new RADGroupInfo("Fleet-Outlier-Group", subgroupInfos, false);
-			var request = new AddRADParameterGroupMessage(groupInfo);
-			engine.SendSLNetMessage(request);
 		}
 
 		private void AssignVisioToView(int viewID, string visioFileName)

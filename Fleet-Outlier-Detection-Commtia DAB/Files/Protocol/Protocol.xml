@@ -3229,7 +3229,7 @@ Do you want to change the PA type?
         public static class Data
         {
             public static bool FastVersion = false;
-            public static TimeSpan START_TIME_AGO = TimeSpan.FromDays(14);
+            public static TimeSpan START_TIME_AGO = {START_TIME_AGO};
             public static TimeSpan POLLING_TIME = TimeSpan.FromMinutes(5);
 
             private static DABData Data_ = new DABData(
@@ -3384,7 +3384,7 @@ public class QAction
 
         int dataIndex = int.Parse(protocol.Dataindex.ToString(), CultureInfo.InvariantCulture);
         var data = Data.GetDABData();
-        var endTime = DateTime.Now - TimeSpan.FromHours(1);
+        var endTime = DateTime.Now - TimeSpan.FromMinutes(15);
         int maxValuesPerTime = Data.FastVersion ? 2000 : 200;
 
         int valuesPushed = 0;
